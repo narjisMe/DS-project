@@ -1,5 +1,4 @@
 import java.util.Objects;
-
 public class Localisation {
 
     private long id;
