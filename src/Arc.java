@@ -1,5 +1,4 @@
 public class Arc {
-
     private Localisation origine;
     private Localisation destination;
     private double distance;
