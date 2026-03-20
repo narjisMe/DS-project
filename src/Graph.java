@@ -1,13 +1,12 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
 public class Graph {
 
-	//ATTRIBUT ?
-	//TODO
+    //ATTRIBUT ?
+    //TODO
     private Map<Long, Localisation> localisationsParId;
     private Map<Long, List<Arc>> arcsSortants;
 
@@ -102,11 +101,11 @@ public class Graph {
     }
 
     public Deque<Localisation> trouverCheminLePlusCourtPourContournerLaZoneInondee(long idOrigin, long idDestination, Localisation[] floodedZone) {
-		//TODO
+        //TODO
         Deque<Localisation> chemin = new ArrayDeque<>();
 
         if (!localisationsParId.containsKey(idOrigin) || !localisationsParId.containsKey(idDestination)) {
-            return chemin;
+            throw new RuntimeException("Pas de chemin de " + idOrigin + " à " + idDestination + " évitant la zone inondée.");
         }
 
         Set<Long> zonesInondees = new HashSet<>();
@@ -119,7 +118,7 @@ public class Graph {
         }
 
         if (zonesInondees.contains(idOrigin) || zonesInondees.contains(idDestination)) {
-            return chemin;
+            throw new RuntimeException("Pas de chemin de " + idOrigin + " à " + idDestination + " évitant la zone inondée.");
         }
 
         Queue<Long> file = new ArrayDeque<>();
@@ -157,7 +156,7 @@ public class Graph {
         }
 
         if (!visites.contains(idDestination)) {
-            return chemin;
+            throw new RuntimeException("Pas de chemin de " + idOrigin + " à " + idDestination + " évitant la zone inondée.");
         }
 
         LinkedList<Localisation> temp = new LinkedList<>();
@@ -167,7 +166,7 @@ public class Graph {
         while (courant != idOrigin) {
             Long precedent = parent.get(courant);
             if (precedent == null) {
-                return new ArrayDeque<>();
+                throw new RuntimeException("Pas de chemin de " + idOrigin + " à " + idDestination + " évitant la zone inondée.");
             }
             courant = precedent;
             temp.addFirst(localisationsParId.get(courant));
@@ -251,13 +250,13 @@ public class Graph {
         Deque<Localisation> chemin = new ArrayDeque<>();
 
         if (!localisationsParId.containsKey(idOrigin) || !localisationsParId.containsKey(idEvacuation) || vVehicule <= 0) {
-            return chemin;
+            throw new RuntimeException("Pas de chemin d'evacuation de " + idOrigin + " à " + idEvacuation + ".");
         }
 
         Localisation origine = localisationsParId.get(idOrigin);
         Double tempsInondationOrigine = tFlood.get(origine);
         if (tempsInondationOrigine != null && 0.0 >= tempsInondationOrigine) {
-            return chemin;
+            throw new RuntimeException("Pas de chemin d'evacuation de " + idOrigin + " à " + idEvacuation + ".");
         }
 
         Map<Long, Double> meilleurTemps = new HashMap<>();
@@ -305,7 +304,7 @@ public class Graph {
         }
 
         if (!meilleurTemps.containsKey(idEvacuation)) {
-            return chemin;
+            throw new RuntimeException("Pas de chemin d'evacuation de " + idOrigin + " à " + idEvacuation + ".");
         }
 
         LinkedList<Localisation> temp = new LinkedList<>();
@@ -315,7 +314,7 @@ public class Graph {
         while (courant != idOrigin) {
             Long precedent = parent.get(courant);
             if (precedent == null) {
-                return new ArrayDeque<>();
+                throw new RuntimeException("Pas de chemin d'evacuation de " + idOrigin + " à " + idEvacuation + ".");
             }
             courant = precedent;
             temp.addFirst(localisationsParId.get(courant));
